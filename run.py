@@ -1,4 +1,5 @@
 import asyncio
+import logging
 import os
 
 from aiogram.types import Update
@@ -33,5 +34,6 @@ def start_web_server():
 
 
 if __name__ == "__main__":
+    logging.basicConfig(level=logging.DEBUG)
     start_web_server()
     asyncio.run(main())
