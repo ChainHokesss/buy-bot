@@ -1,5 +1,6 @@
 import asyncio
 import logging
+import multiprocessing
 import os
 
 from aiogram.types import Update
@@ -33,7 +34,21 @@ def start_web_server():
     web.run_app(app, host="0.0.0.0", port=port)
 
 
-if __name__ == "__main__":
-    logging.basicConfig(level=logging.DEBUG)
+def start_web():
     start_web_server()
+
+
+def start_bot():
     asyncio.run(main())
+
+
+if __name__ == '__main__':
+    logging.basicConfig(level=logging.DEBUG)
+    web_process = multiprocessing.Process(target=start_web)
+    bot_process = multiprocessing.Process(target=start_bot)
+
+    web_process.start()
+    bot_process.start()
+
+    web_process.join()
+    bot_process.join()
