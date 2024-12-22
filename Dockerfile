@@ -8,6 +8,7 @@ RUN apt-get update
 WORKDIR /code/
 COPY Pipfile /code/
 COPY Pipfile.lock /code/
+COPY entrypoint.sh /code/
 
 RUN pip install --upgrade pip
 RUN pip install pipenv
