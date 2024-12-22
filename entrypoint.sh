@@ -2,5 +2,5 @@
 
 set -e
 
-echo "Start service" && make migrate
+echo "Start service" && alembic upgrade head
 exec python run.py
