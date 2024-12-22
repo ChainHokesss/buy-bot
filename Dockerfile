@@ -15,3 +15,4 @@ RUN pipenv install --system --deploy
 
 COPY . /code/
 EXPOSE 8000
+ENTRYPOINT ["./entrypoint.sh"]
