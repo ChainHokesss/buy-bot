@@ -12,6 +12,7 @@ COPY Pipfile.lock /code/
 RUN pip install --upgrade pip
 RUN pip install pipenv
 RUN pipenv install --system --deploy
+RUN chmod +x ./entrypoint.sh
 
 COPY . /code/
 EXPOSE 8000
