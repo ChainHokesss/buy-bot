@@ -1,3 +1,5 @@
+import logging
+
 from aiogram import types
 from aiogram.filters import Command
 from aiogram.fsm.context import FSMContext
@@ -23,6 +25,7 @@ class Form(StatesGroup):
 
 @dp.message(Command('add'))
 async def add_token(message: types.Message, state: FSMContext) -> None:
+    logging.info(f'Token config creation started, chat_id: {message.chat.id}')
     await state.set_state(Form.token)
     await message.answer('❔Send me token name.')
 
@@ -92,3 +95,4 @@ async def process_photo(message: types.Message, state: FSMContext):
     if not token__subscribe(token_name=token_chat_config.token_name):
         await state.set_state(Form.emoji)
         await message.answer('Subscribe failed.')
+    logging.info(f'Token config created, chat_id: {message.chat.id}')
