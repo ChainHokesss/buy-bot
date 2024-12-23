@@ -7,16 +7,15 @@ from src.token.logic.interactors.telegram import telegram__token_message
 from src.token.logic.selectors.token_chat_config import token_chat_configs__by_token_name
 from src.token.models import TokenChatConfig
 
-existing_loop = asyncio.new_event_loop()
 
 def trade_callback_handler(message):
     data = message['data']
     if not data:
         return
-    future = asyncio.run_coroutine_threadsafe(
-        async_trade_callback_handler(coin_notifications=data), loop=existing_loop
+    loop = asyncio.get_event_loop()
+    asyncio.run_coroutine_threadsafe(
+        async_trade_callback_handler(coin_notifications=data), loop=loop
     )
-    future.result()
 
 
 async def async_trade_callback_handler(coin_notifications: list[dict]):
