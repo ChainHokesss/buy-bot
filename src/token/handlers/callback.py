@@ -13,6 +13,8 @@ def trade_callback_handler(message):
     if not data:
         return
     loop = asyncio.get_event_loop()
+    if not loop.is_running():
+        loop = asyncio.new_event_loop()
     asyncio.run_coroutine_threadsafe(
         async_trade_callback_handler(coin_notifications=data), loop=loop
     )
