@@ -13,7 +13,6 @@ def trade_callback_handler(message):
     data = message['data']
     if not data:
         return
-    logging.info('Callback received %s', data)
     asyncio.run_coroutine_threadsafe(
         async_trade_callback_handler(coin_notifications=data), loop=existing_loop
     )
@@ -32,7 +31,7 @@ async def async_trade_callback_handler(coin_notifications: list[dict]):
             for token_chat_config in token_chat_configs
             for coin_notification in coin_notifications
         ]
-        await asyncio.gather(*tasks)
+        await asyncio.gather(*tasks, return_exceptions=True)
 
 
 async def handle_coin_notification(coin_notification: dict, token_chat_config: TokenChatConfig):
