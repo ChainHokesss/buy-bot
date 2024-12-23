@@ -1,9 +1,4 @@
 import asyncio
-import logging
-import multiprocessing
-import os
-
-from aiohttp import web
 
 from src.token.handlers.token import *
 from src.bot import bot, dp
@@ -19,27 +14,6 @@ async def main():
     await dp.start_polling(bot)
 
 
-def start_web_server():
-    port = int(os.getenv("PORT", 8080))
-    app = web.Application()
-    web.run_app(app, host="0.0.0.0", port=port)
-
-
-def start_web():
-    start_web_server()
-
-
-def start_bot():
-    asyncio.run(main())
-
-
 if __name__ == '__main__':
     logging.basicConfig(level=logging.DEBUG)
-    web_process = multiprocessing.Process(target=start_web)
-    bot_process = multiprocessing.Process(target=start_bot)
-
-    web_process.start()
-    bot_process.start()
-
-    web_process.join()
-    bot_process.join()
+    asyncio.run(main())
