@@ -13,6 +13,7 @@ def trade_callback_handler(message):
     data = message['data']
     if not data:
         return
+    logging.info('Callback received %s', data)
     asyncio.run_coroutine_threadsafe(
         async_trade_callback_handler(coin_notifications=data), loop=existing_loop
     )
