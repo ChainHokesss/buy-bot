@@ -1,6 +1,7 @@
 import asyncio
 import logging
 
+from run import loop
 from src.bot import bot
 from src.infra.sql.unit_of_work import UnitOfWork
 from src.token.logic.interactors.telegram import telegram__token_message
@@ -12,12 +13,10 @@ def trade_callback_handler(message):
     data = message['data']
     if not data:
         return
-    loop = asyncio.get_event_loop()
-    if not loop.is_running():
-        loop = asyncio.new_event_loop()
-    asyncio.run_coroutine_threadsafe(
+    future = asyncio.run_coroutine_threadsafe(
         async_trade_callback_handler(coin_notifications=data), loop=loop
     )
+    future.result()
 
 
 async def async_trade_callback_handler(coin_notifications: list[dict]):
