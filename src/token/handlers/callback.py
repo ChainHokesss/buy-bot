@@ -20,6 +20,7 @@ def trade_callback_handler(message):
 
 
 async def async_trade_callback_handler(coin_notifications: list[dict]):
+    logging.info('Callback received %s', coin_notifications)
     token_name = coin_notifications[0]['coin']
     async with UnitOfWork() as uow:
         query = token_chat_configs__by_token_name(token_name=token_name)
