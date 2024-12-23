@@ -92,7 +92,13 @@ async def process_photo(message: types.Message, state: FSMContext):
                 file_type=file_type,
             )
         )
-    if not token__subscribe(token_name=token_chat_config.token_name):
-        await state.set_state(Form.emoji)
+    try:
+        is_subscribed = token__subscribe(token_name=token_chat_config.token_name)
+    except Exception as e:
+        logging.error(e)
         await message.answer('Subscribe failed.')
+        return
+    if not is_subscribed:
+        await message.answer('Subscribe failed.')
+        return
     logging.info(f'Token config created, chat_id: {message.chat.id}')
