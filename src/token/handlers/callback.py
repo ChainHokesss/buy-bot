@@ -42,6 +42,7 @@ async def handle_coin_notification(coin_notification: dict, token_chat_config: T
         token_chat_config=token_chat_config, notification=coin_notification
     )
     if token_chat_config.file_type == 'animation':
+        logging.info('Send message with animation')
         return await bot.send_animation(
             chat_id=token_chat_config.chat_id,
             animation=token_chat_config.file_id,
@@ -49,12 +50,14 @@ async def handle_coin_notification(coin_notification: dict, token_chat_config: T
             caption=message,
         )
     elif token_chat_config.file_type == 'photo':
+        logging.info('Send message with photo')
         return await bot.send_photo(
             chat_id=token_chat_config.chat_id,
             photo=token_chat_config.file_id,
             parse_mode="HTML",
             caption=message,
         )
+    logging.info('Send message')
     return await bot.send_message(
         chat_id=token_chat_config.chat_id,
         parse_mode="HTML",
