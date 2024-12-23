@@ -1,6 +1,12 @@
 import asyncio
 import logging
 
+logging.basicConfig(
+    level=logging.DEBUG,  # Уровень логирования: DEBUG, INFO, WARNING, ERROR, CRITICAL
+    format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
+    handlers=[logging.StreamHandler()],
+)
+
 from src.token.handlers.token import *
 from src.bot import bot, dp
 from src.token.logic.selectors.token_chat_config import token_chat_configs__distinct_token_name
@@ -17,5 +23,4 @@ async def main():
 
 
 if __name__ == '__main__':
-    logging.basicConfig(level=logging.DEBUG)
     asyncio.run(main())
