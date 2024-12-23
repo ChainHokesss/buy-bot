@@ -1,4 +1,5 @@
 import asyncio
+import logging
 
 from src.token.handlers.token import *
 from src.bot import bot, dp
@@ -11,6 +12,7 @@ async def main():
         token_configs = await query.execute(uow.session)
         for token_config in token_configs:
             token__subscribe(token_name=token_config.token_name)
+    logging.info('Start bot')
     await dp.start_polling(bot)
 
 
