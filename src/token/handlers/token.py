@@ -80,20 +80,17 @@ async def process_emoji_delta(message: types.Message, state: FSMContext):
 async def process_photo(message: types.Message, state: FSMContext):
     state_data = await state.get_data()
     file_id, file_type = telegram__parse_file_id_and_file_type(message=message)
-    async with UnitOfWork() as uow:
-        token_chat_config = await token_chat_config__create_or_update(
-            uow=uow,
-            token_chat_config_create_dto=TokenChatConfigCreateDto(
-                token_name=state_data['token'],
-                chat_id=message.chat.id,
-                min_buy_price=state_data['min_buy_price'],
-                emoji=state_data['emoji'],
-                file_id=file_id,
-                file_type=file_type,
-            )
-        )
+    token_chat_config_create_dto = TokenChatConfigCreateDto(
+        token_name=state_data['token'],
+        chat_id=message.chat.id,
+        min_buy_price=state_data['min_buy_price'],
+        emoji=state_data['emoji'],
+        file_id=file_id,
+        file_type=file_type,
+    )
+
     try:
-        is_subscribed = token__subscribe(token_name=token_chat_config.token_name)
+        is_subscribed = token__subscribe(token_name=token_chat_config_create_dto.token_name)
     except Exception as e:
         logging.error(e)
         await message.answer('Subscribe failed.')
@@ -101,4 +98,10 @@ async def process_photo(message: types.Message, state: FSMContext):
     if not is_subscribed:
         await message.answer('Subscribe failed.')
         return
+
+    async with UnitOfWork() as uow:
+        await token_chat_config__create_or_update(
+            uow=uow,
+            token_chat_config_create_dto=token_chat_config_create_dto
+        )
     logging.info(f'Token config created, chat_id: {message.chat.id}')
