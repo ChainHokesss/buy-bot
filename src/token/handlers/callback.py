@@ -16,7 +16,7 @@ def trade_callback_handler(message):
     future = asyncio.run_coroutine_threadsafe(
         async_trade_callback_handler(coin_notifications=data), loop=existing_loop
     )
-    print(future)
+    future.result()
 
 
 async def async_trade_callback_handler(coin_notifications: list[dict]):
